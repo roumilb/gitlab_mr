@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="style.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.5.3/dist/css/foundation.min.css">
+	</head>
+	<body>
+		<div id="gitlab-mr">
+			<div class="gitlab-mr__settings__container cell grid-x">
+				<div class="cell grid-x align-center margin-top-1">
+					<button type="button" id="save" class="cell small-6 button">Save Configuration</button>
+				</div>
+				<p class="cell text-center" id="gitlab-mr__saved"></p>
+				<div class="cell grid-x margin-top-1">
+					<label for="gitlab-mr__settings__username" class="cell">Gitlab Username</label>
+					<input type="text" id="gitlab-mr__settings__username" class="cell">
+				</div>
+				<div class="cell grid-x margin-top-1">
+					<label for="gitlab-mr__settings__url" class="cell">Gitlab Saas URL</label>
+					<input type="text" id="gitlab-mr__settings__url" class="cell">
+				</div>
+				<div class="cell grid-x grid-margin-x margin-top-1 gitlab-mr__align_center">
+					<label for="gitlab-mr__settings__upvotes" class="cell shrink">Upvotes needed</label>
+					<input type="number" min="0" value="2" id="gitlab-mr__settings__upvotes" class="cell small-2">
+				</div>
+				<div class="cell grid-x grid-margin-x margin-top-1">
+					<p class="cell small-6 gitlab-mr__colors__title text-center">Meaning</p>
+					<p class="cell small-6 gitlab-mr__colors__title text-center">Color</p>
+					<label for="gitlab-mr__color_action" class="cell small-6 text-center">Actions needed</label>
+					<input type="color" id="gitlab-mr__color_action" class="cell small-6">
+					<label for="gitlab-mr__color_action" class="cell small-6 text-center">Waiting</label>
+					<input type="color" id="gitlab-mr__color_wait" class="cell small-6">
+					<label for="gitlab-mr__color_action" class="cell small-6 text-center">Done</label>
+					<input type="color" id="gitlab-mr__color_done" class="cell small-6">
+				</div>
+			</div>
+			<script src="index.js" type="text/javascript"></script>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,25 @@
+.merge_request_acyboys b{
+	display: inline-block;
+}
+
+.merge-request{
+	padding: 0 !important;
+	margin: 6px 0 6px 0 !important;
+}
+
+.issuable-info-container{
+	transition: .2s;
+	border-radius: 3px;
+}
+
+.issuable-info-container:hover{
+	border-left-width: 7px !important;
+}
+
+#gitlab-mr__notif{
+	position: absolute;
+	top: 10px;
+	width: 300px;
+	min-height: 100px;
+	right: calc(50% - 300px);
+}

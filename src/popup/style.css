@@ -1,0 +1,79 @@
+#gitlab-mr{
+	width: 400px;
+}
+
+.gitlab-mr__img__container{
+	width: 100%;
+	margin-top: 2rem;
+	text-align: center;
+}
+
+.gitlab-mr__img__container img{
+	width: 70px;
+}
+
+input[type="text"], input[type="number"]{
+	padding: .3rem;
+	border: 2px solid #bdbdbd;
+	border-radius: 4px;
+	box-shadow: none !important;
+	margin: 0 !important;
+}
+
+input[type="text"]:hover, input[type="text"]:focus, input[type="number"]:hover, input[type="number"]:focus{
+	border: 2px solid #e44328;
+}
+
+.gitlab-mr__settings__container{
+	padding: 1rem;
+}
+
+label, input[type="text"], .button{
+	font-size: .9rem !important;
+}
+
+#gitlab-mr .gitlab-mr__settings__container .button{
+	padding: .6rem;
+	border-radius: 4px;
+	color: white;
+	background-color: #e44328;
+	transition: .2s;
+	margin: 0 !important;
+}
+
+#gitlab-mr .gitlab-mr__settings__container .button-secondary{
+	padding: .6rem;
+	border-radius: 4px;
+	color: #e44328;
+	border: 2px solid #e44328;
+	background-color: white;
+	transition: .2s;
+	cursor: pointer;
+}
+
+#gitlab-mr .gitlab-mr__settings__container .button:hover, #gitlab-mr .gitlab-mr__settings__container .button-secondary:hover{
+	opacity: .7;
+}
+
+#gitlab-mr__saved{
+	min-height: 30px;
+	margin: 1rem 0 0 0 !important;
+}
+
+.margin-top-1{
+	margin-top: 1rem;
+}
+
+.margin-top-2{
+	margin-top: 2rem;
+}
+
+.gitlab-mr__align_center{
+	align-items: center;
+	display: flex;
+}
+
+.gitlab-mr__colors__title{
+	font-size: .9rem;
+	font-weight: 500;
+}
