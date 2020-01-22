@@ -24,10 +24,12 @@
         "src/content/content.css"
       ],
       "js": [
+        "src/content/async-chrome.js",
         "src/content/helper_api.js",
         "src/content/count_discussions.js",
         "src/content/conditional_display.js",
-        "src/content/index.js"
+        "src/content/index.js",
+        "src/content_new/index.js"
       ]
     }
   ],
