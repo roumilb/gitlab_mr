@@ -57,7 +57,7 @@ function handleDiscussions(key, discussion) {
 function findAndReplace(requestId, count) {
     let allIssues = document.getElementsByClassName('issuable-reference');
     for (let key = 0 ; key < allIssues.length ; key++) {
-        if (allIssues[key].innerHTML.trim() === '!' + requestId) {
+        if (allIssues[key].innerHTML.trim().indexOf('!' + requestId) !== -1) {
             addHtml(allIssues, count, key);
             break;
         }

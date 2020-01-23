@@ -21,15 +21,19 @@ if (null !== ifInGitlab && undefined !== ifInGitlab) {
                 apiUrlBase += 'api/v4';
                 if (result.gitlabmr.colors !== undefined) colors = result.gitlabmr.colors;
                 if (result.gitlabmr.upvotes !== undefined && result.gitlabmr.upvotes > 0) upvotesNeeded = result.gitlabmr.upvotes;
-                init();
+                init(currentUrl);
             }
         }
     });
 }
 
-function init() {
-    projectId = ifInGitlab.value;
-    if (undefined === projectId) return false;
-    initCountDiscussions();
-    initConditionalDisplay();
+function init(currentUrl) {
+    if (currentUrl.indexOf('dashboard') !== -1) {
+        initMyMrPage();
+    } else {
+        projectId = ifInGitlab.value;
+        if (undefined === projectId) return false;
+        initCountDiscussions();
+        initConditionalDisplay();
+    }
 }

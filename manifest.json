@@ -1,6 +1,6 @@
 {
   "name": "Gitlab MR tools",
-  "version": "1.3",
+  "version": "1.4",
   "description": "Gitlab MR tools for Saas",
   "permissions": [
     "storage",
@@ -27,6 +27,7 @@
         "src/content/helper_api.js",
         "src/content/count_discussions.js",
         "src/content/conditional_display.js",
+        "src/content/my_mr.js",
         "src/content/index.js"
       ]
     }

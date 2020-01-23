@@ -16,7 +16,7 @@ function sortMergeRequest() {
 function displayStatusMr(id) {
     let allIssues = document.getElementsByClassName('issuable-reference');
     for (let key = 0 ; key < allIssues.length ; key++) {
-        if (allIssues[key].innerHTML.trim() === '!' + id) {
+        if (allIssues[key].innerHTML.trim().indexOf('!' + id) !== -1) {
             let issue = allIssues[key].closest('.issuable-info-container');
             issue.style.borderLeft = '5px solid ' + colors[mergeRequestStatus[id]];
             issue.style.paddingLeft = '10px';
@@ -75,14 +75,6 @@ function handleMyMrCall(id, isDone) {
     }
 }
 
-function handleDiscussionMyMr(id, discussionKey) {
-    if (!allDiscussions[discussionKey].notes[0].resolved && username !== allDiscussions[discussionKey].notes[allDiscussions[discussionKey].notes.length - 1].author.username) {
-        return 'actions';
-    } else {
-        return 'wait';
-    }
-}
-
 //HANDLE OTHERS MARGE REQUESTS
 
 function handleOtherMrCall(id, isDone) {
@@ -106,13 +98,15 @@ function handleOtherMrCall(id, isDone) {
                     } else {
                         counts.my_discussions_not_resolved_need_wait++;
                     }
+                } else if (username !== notes[0].author.username && !notes[0].resolved && username === notes[notes.length - 1].author.username) {
+                    counts.my_discussions_not_resolved_need_wait++;
                 }
             }
         });
         let status = 'done';
         if (myUpvotes[id] && counts.my_discussions_resolved === counts.my_discussions) {
             status = 'done';
-        } else if (!isDone && !myUpvotes[id] && (0 === counts.my_discussions || counts.my_discussions_resolved === counts.my_discussions || counts.my_discussions_not_resolved_to_count > 0)) {
+        } else if (!isDone && !myUpvotes[id] && (0 === counts.my_discussions || (counts.my_discussions_resolved === counts.my_discussions && counts.my_discussions_not_resolved_need_wait < 1) || counts.my_discussions_not_resolved_to_count > 0)) {
             status = 'actions';
         } else if (!isDone && counts.my_discussions_not_resolved_need_wait > 0) {
             status = 'wait';
