@@ -1,6 +1,6 @@
 {
   "name": "Gitlab MR tools",
-  "version": "1.4",
+  "version": "2.0",
   "description": "Gitlab MR tools for Saas",
   "permissions": [
     "storage",
