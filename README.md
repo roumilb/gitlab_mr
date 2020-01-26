@@ -1,6 +1,8 @@
 # Gitlab merge requests tools
 
-This is an extension to have a better display on the merge request page.
+This is a chrome extension to have a better display on the merge request page.
+
+chrome store: https://chrome.google.com/webstore/detail/gitlab-mr-tools/gefblbbchjoiikjegebbmilelbecgcaa
 
 # How it works
 
