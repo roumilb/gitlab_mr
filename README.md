@@ -31,6 +31,6 @@ There is 3 status for a merge request:
 
 ### v1 initial release 
 
-* Display how mush discussions are not resolve in the listing
+* Display how much discussions are not resolved in the listing
 * Display color code on the merge request for what you have to do
 * Add settings (username, url, upvote needed, color code)
