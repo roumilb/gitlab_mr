@@ -58,6 +58,7 @@ function findAndReplace(requestId, count) {
     let allIssues = document.getElementsByClassName('issuable-reference');
     for (let key = 0 ; key < allIssues.length ; key++) {
         if (allIssues[key].innerHTML.trim().indexOf('!' + requestId) !== -1) {
+            count.resolved = count.total >= count.notResolved ? count.total - count.notResolved : 0;
             addHtml(allIssues, count, key);
             break;
         }
@@ -68,5 +69,5 @@ function addHtml(allIssues, count, key) {
     let container = allIssues[key].closest('.issuable-info-container');
     let discNow = container.getElementsByClassName('issuable-meta')[0];
     discNow.getElementsByClassName('issuable-comments')[0].innerHTML += ' comments';
-    discNow.innerHTML += '<div class="merge_request_acyboys"><b>' + count.notResolved + ' </b> discussions not resolved out of <b>' + count.total + '</b></div>';
+    discNow.innerHTML += '<div class="merge_request_acyboys">Discussions resolved: ' + count.resolved + '/' + count.total + '</div>';
 }

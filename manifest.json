@@ -1,7 +1,7 @@
 {
-  "name": "Gitlab MR tools",
-  "version": "2.0",
-  "description": "Gitlab MR tools for Saas",
+  "name": "Gitlab merge request tools",
+  "version": "2.1",
+  "description": "Gitlab merge request tools",
   "permissions": [
     "storage",
     "declarativeContent",

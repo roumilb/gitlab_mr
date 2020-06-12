@@ -9,13 +9,14 @@ function initMyMrPage() {
     for (let i = 0 ; i < mergeRequests.length ; i++) {
         //get the mr info
         infoMyMergeRequest[i] = mergeRequests[i].getAttribute('href').split('/').splice(-3);
-        // infoMyMergeRequest[i] = mergeRequests[i].getAttribute('data-id');
 
         xhrMyMrProjects[i] = new XMLHttpRequest();
         xhrMyMrProjects[i].onreadystatechange = function () {
             if (xhrMyMrProjects[i].readyState === 4) {
                 projectId = handleProjects(infoMyMergeRequest[i][0], JSON.parse(xhrMyMrProjects[i].responseText));
-                getMergeRequestMyMR(projectId, infoMyMergeRequest[i][2]);
+                if (projectId) {
+                    getMergeRequestMyMR(projectId, infoMyMergeRequest[i][2]);
+                }
             }
         };
         xhrMyMrProjects[i].open('GET', `${apiUrlBase}/projects?search=${infoMyMergeRequest[i][0]}`);

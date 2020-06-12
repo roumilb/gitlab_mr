@@ -18,15 +18,18 @@ function displayStatusMr(id) {
     for (let key = 0 ; key < allIssues.length ; key++) {
         if (allIssues[key].innerHTML.trim().indexOf('!' + id) !== -1) {
             let issue = allIssues[key].closest('.issuable-info-container');
-            issue.style.borderLeft = '5px solid ' + colors[mergeRequestStatus[id]];
+            issue.style.borderLeft = '5px solid ' + colors[mergeRequestStatus[id].status];
             issue.style.paddingLeft = '10px';
+            if (undefined !== mergeRequestStatus[id].message && '' !== mergeRequestStatus[id].message) issue.querySelector('.merge-request-title').innerHTML += '<span>(' + mergeRequestStatus[id].message + ')</span>';
             break;
         }
     }
 }
 
 function newCallForDiscussions(id, isMine, isDone) {
-    mergeRequestStatus[id] = 'wait';
+    mergeRequestStatus[id] = {
+        'status': 'wait',
+    };
     xhrCondDisplay[id] = new XMLHttpRequest();
     xhrCondDisplay[id].onreadystatechange = function () {
         if (isMine) {
@@ -70,7 +73,10 @@ function handleMyMrCall(id, isDone) {
                 status.push(handleDiscussionMyMr(id, discussionKey));
             }
         });
-        mergeRequestStatus[id] = status.indexOf('actions') !== -1 || isDone ? 'actions' : 'wait';
+        mergeRequestStatus[id] = {
+            'status': status.indexOf('actions') !== -1 || isDone ? 'actions' : 'wait',
+            'message': isDone && status.indexOf('wait') !== -1 ? 'Can be merge!' : '',
+        };
         displayStatusMr(id);
     }
 }
@@ -103,6 +109,7 @@ function handleOtherMrCall(id, isDone) {
                 }
             }
         });
+        let message = '';
         let status = 'done';
         if (myUpvotes[id] && counts.my_discussions_resolved === counts.my_discussions) {
             status = 'done';
@@ -111,7 +118,10 @@ function handleOtherMrCall(id, isDone) {
         } else if (!isDone && counts.my_discussions_not_resolved_need_wait > 0) {
             status = 'wait';
         }
-        mergeRequestStatus[id] = status;
+        mergeRequestStatus[id] = {
+            'status': status,
+            'message': message,
+        };
         displayStatusMr(id);
     }
 }

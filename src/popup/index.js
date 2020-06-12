@@ -33,7 +33,6 @@ document.getElementById('save').addEventListener('click', (event) => {
         colors: colorsPopup,
         upvotes: upvotesPopup,
     };
-    console.log(options, document.getElementById('gitlab-mr__color_wait').value);
     chrome.storage.sync.set({'gitlabmr': options}, function () {
         let savedContainer = document.querySelector('#gitlab-mr__saved');
         savedContainer.innerHTML = 'Configuration saved';
