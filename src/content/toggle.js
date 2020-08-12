@@ -3,7 +3,7 @@ let currentFect = 0;
 
 function waitForLoading() {
     currentFect++;
-    let resolvedButtons = document.querySelectorAll('.line-resolve-btn');
+    let resolvedButtons = document.querySelectorAll('.line-resolve-btn.is-active');
     if (resolvedButtons.length === 0) {
         if (currentFect <= maxFetch) {
             setTimeout(function () {
@@ -17,17 +17,28 @@ function waitForLoading() {
 
 function loaded(resolvedButtons) {
     for (let i = 0 ; i < resolvedButtons.length ; i++) {
-        let thread = resolvedButtons[i].closest('.timeline-content');
+        let header = resolvedButtons[i].closest('.note-header');
+        if (null === header) continue;
+        let thread = header.closest('.timeline-content');
         if (null === thread) continue;
         let firstComment = thread.querySelector('.timeline-discussion-body .note-body');
         if (null === firstComment) continue;
         firstComment.style.height = '0';
         firstComment.style.paddingTop = '20px';
         firstComment.style.position = 'relative';
-        firstComment.innerHTML += '<div class="gtilab_mr_tools_toggle">Toggle thread</div>';
+        firstComment.innerHTML += '<div class="gtilab_mr_tools_toggle"><i class="fa fa-chevron-down"></i>Toggle thread</div>';
 
-        firstComment.querySelector('.gtilab_mr_tools_toggle').addEventListener('click', function () {
-            firstComment.style.height = firstComment.style.height === 'auto' ? '0' : 'auto';
+        firstComment.querySelector('.gtilab_mr_tools_toggle').addEventListener('click', function (event) {
+            let icon = event.target.querySelector('i');
+            if (firstComment.style.height === 'auto') {
+                firstComment.style.height = '0';
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            } else {
+                firstComment.style.height = 'auto';
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            }
         });
     }
 }

@@ -34,6 +34,13 @@
 	transition: .1s;
 }
 
+.gtilab_mr_tools_toggle i{
+	margin-right: 3px;
+	font-size: 10px;
+	line-height: 18px;
+	vertical-align: top;
+}
+
 .gtilab_mr_tools_toggle:hover{
 	color: #1b69b6;
 }
