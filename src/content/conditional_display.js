@@ -8,7 +8,7 @@ function sortMergeRequest() {
     if (xhrGetAllMergeRequests.readyState === 4) {
         mrCondDisplay = JSON.parse(xhrGetAllMergeRequests.responseText);
         Object.keys(mrCondDisplay).forEach(key => {
-            getUpvoters(mrCondDisplay[key].iid, mrCondDisplay[key].author.username === username, mrCondDisplay[key].upvotes >= upvotesNeeded);
+            getUpvoters(mrCondDisplay[key].iid, mrCondDisplay[key].author.username === username, mrCondDisplay[key].upvotes >= upvotesNeeded && mrCondDisplay[key].downvotes === 0);
         });
     }
 }
@@ -75,7 +75,7 @@ function handleMyMrCall(id, isDone) {
         });
         mergeRequestStatus[id] = {
             'status': status.indexOf('actions') !== -1 || isDone ? 'actions' : 'wait',
-            'message': isDone && status.indexOf('wait') !== -1 ? 'Can be merge!' : '',
+            'message': isDone && status.indexOf('wait') !== -1 ? 'Can be merged!' : '',
         };
         displayStatusMr(id);
     }

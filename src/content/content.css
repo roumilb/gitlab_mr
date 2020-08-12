@@ -23,3 +23,23 @@
 	min-height: 100px;
 	right: calc(50% - 300px);
 }
+
+.gtilab_mr_tools_toggle{
+	font-size: 13px;
+	color: #919191;
+	position: absolute;
+	top: 0;
+	right: 0;
+	cursor: pointer;
+	transition: .1s;
+}
+
+.gtilab_mr_tools_toggle:hover{
+	color: #1b69b6;
+}
+
+.gtilab_mr_tools_toggle:focus{
+	color: #1b69b6;
+	text-decoration: underline;
+	outline: none;
+}

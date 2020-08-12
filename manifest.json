@@ -28,7 +28,8 @@
         "src/content/count_discussions.js",
         "src/content/conditional_display.js",
         "src/content/my_mr.js",
-        "src/content/index.js"
+        "src/content/index.js",
+        "src/content/toggle.js"
       ]
     }
   ],
