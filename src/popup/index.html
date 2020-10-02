@@ -23,6 +23,14 @@
 					<label for="gitlab-mr__settings__upvotes" class="cell shrink">Upvotes needed</label>
 					<input type="number" min="0" value="2" id="gitlab-mr__settings__upvotes" class="cell small-2">
 				</div>
+				<div class="cell grid-x grid-margin-x margin-top-1 gitlab-mr__align_center">
+					<p class="cell small-6 gitlab-mr__colors__title text-center">Merge request tracking: </p>
+					<select id="gitlab-mr__track__mr" class="cell small-6">
+						<option value="">track all merge requests</option>
+						<option value="not_mine">don't track merge request open by other</option>
+						<option value="not_mine_participate">don't track merge request open by other in which I didn't participate</option>
+					</select>
+				</div>
 				<div class="cell grid-x grid-margin-x margin-top-1">
 					<p class="cell small-6 gitlab-mr__colors__title text-center">Meaning</p>
 					<p class="cell small-6 gitlab-mr__colors__title text-center">Color</p>

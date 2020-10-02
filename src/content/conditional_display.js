@@ -8,8 +8,23 @@ function sortMergeRequest() {
     if (xhrGetAllMergeRequests.readyState === 4) {
         mrCondDisplay = JSON.parse(xhrGetAllMergeRequests.responseText);
         Object.keys(mrCondDisplay).forEach(key => {
-            getUpvoters(mrCondDisplay[key].iid, mrCondDisplay[key].author.username === username, mrCondDisplay[key].upvotes >= upvotesNeeded && mrCondDisplay[key].downvotes === 0);
+            let isMine = mrCondDisplay[key].author.username === username;
+            if (!isMine && tracking === 'not_mine') {
+                addOpacityIfNotTracked(mrCondDisplay[key].iid);
+                return;
+            }
+            getUpvoters(mrCondDisplay[key].iid, isMine, mrCondDisplay[key].upvotes >= upvotesNeeded && mrCondDisplay[key].downvotes === 0);
         });
+    }
+}
+
+function addOpacityIfNotTracked(id) {
+    let allIssues = document.getElementsByClassName('issuable-reference');
+    for (let key = 0 ; key < allIssues.length ; key++) {
+        if (allIssues[key].innerHTML.trim().indexOf('!' + id) !== -1) {
+            let issue = allIssues[key].closest('.issuable-info-container');
+            issue.style.opacity = '.5';
+        }
     }
 }
 
@@ -20,7 +35,9 @@ function displayStatusMr(id) {
             let issue = allIssues[key].closest('.issuable-info-container');
             issue.style.borderLeft = '5px solid ' + colors[mergeRequestStatus[id].status];
             issue.style.paddingLeft = '10px';
-            if (undefined !== mergeRequestStatus[id].message && '' !== mergeRequestStatus[id].message) issue.querySelector('.merge-request-title').innerHTML += '<span>(' + mergeRequestStatus[id].message + ')</span>';
+            if (undefined !== mergeRequestStatus[id].message && '' !== mergeRequestStatus[id].message) {
+                issue.querySelector('.merge-request-title').innerHTML += '<span>(' + mergeRequestStatus[id].message + ')</span>';
+            }
             break;
         }
     }
@@ -28,7 +45,7 @@ function displayStatusMr(id) {
 
 function newCallForDiscussions(id, isMine, isDone) {
     mergeRequestStatus[id] = {
-        'status': 'wait',
+        'status': 'wait'
     };
     xhrCondDisplay[id] = new XMLHttpRequest();
     xhrCondDisplay[id].onreadystatechange = function () {
@@ -75,7 +92,7 @@ function handleMyMrCall(id, isDone) {
         });
         mergeRequestStatus[id] = {
             'status': status.indexOf('actions') !== -1 || isDone ? 'actions' : 'wait',
-            'message': isDone && status.indexOf('wait') !== -1 ? 'Can be merged!' : '',
+            'message': isDone && status.indexOf('wait') !== -1 ? 'Can be merged!' : ''
         };
         displayStatusMr(id);
     }
@@ -90,10 +107,16 @@ function handleOtherMrCall(id, isDone) {
             my_discussions: 0,
             my_discussions_resolved: 0,
             my_discussions_not_resolved_to_count: 0,
-            my_discussions_not_resolved_need_wait: 0,
+            my_discussions_not_resolved_need_wait: 0
         };
+        let participated = false;
         Object.keys(allDiscussions).forEach(discussionKey => {
             let notes = allDiscussions[discussionKey].notes;
+            if (tracking === 'not_mine_participate') {
+                notes.map(note => {
+                    if (note.author.username === username) participated = true;
+                });
+            }
             if (notes[0].resolvable) {
                 if (username === notes[0].author.username) {
                     counts.my_discussions++;
@@ -109,18 +132,25 @@ function handleOtherMrCall(id, isDone) {
                 }
             }
         });
+        if (!participated && tracking === 'not_mine_participate') {
+            addOpacityIfNotTracked(id);
+            return;
+        }
         let message = '';
         let status = 'done';
         if (myUpvotes[id] && counts.my_discussions_resolved === counts.my_discussions) {
             status = 'done';
-        } else if (!isDone && !myUpvotes[id] && (0 === counts.my_discussions || (counts.my_discussions_resolved === counts.my_discussions && counts.my_discussions_not_resolved_need_wait < 1) || counts.my_discussions_not_resolved_to_count > 0)) {
+        } else if (!isDone && !myUpvotes[id] && (0 === counts.my_discussions || (counts.my_discussions_resolved
+                                                                                 === counts.my_discussions
+                                                                                 && counts.my_discussions_not_resolved_need_wait
+                                                                                 < 1) || counts.my_discussions_not_resolved_to_count > 0)) {
             status = 'actions';
         } else if (!isDone && counts.my_discussions_not_resolved_need_wait > 0) {
             status = 'wait';
         }
         mergeRequestStatus[id] = {
             'status': status,
-            'message': message,
+            'message': message
         };
         displayStatusMr(id);
     }
