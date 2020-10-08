@@ -14,6 +14,7 @@ chrome.storage.sync.get(['gitlabmr'], function (result) {
         document.getElementById('gitlab-mr__color_wait').value = result.gitlabmr.colors.wait === undefined ? colors.wait : result.gitlabmr.colors.wait;
         document.getElementById('gitlab-mr__color_done').value = result.gitlabmr.colors.done === undefined ? colors.done : result.gitlabmr.colors.done;
         document.getElementById('gitlab-mr__track__mr').value = result.gitlabmr.tracking === undefined ? '' : result.gitlabmr.tracking;
+        document.getElementById('gitlab-mr__settings__upvotes').value = result.gitlabmr.upvotes === undefined ? '' : result.gitlabmr.upvotes;
     } else {
         document.getElementById('gitlab-mr__color_action').value = colors.actions;
         document.getElementById('gitlab-mr__color_wait').value = colors.wait;
