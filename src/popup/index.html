@@ -20,8 +20,21 @@
 					<input type="text" id="gitlab-mr__settings__url" class="cell">
 				</div>
 				<div class="cell grid-x grid-margin-x margin-top-1 gitlab-mr__align_center">
-					<label for="gitlab-mr__settings__upvotes" class="cell shrink">Upvotes needed</label>
-					<input type="number" min="0" value="2" id="gitlab-mr__settings__upvotes" class="cell small-2">
+					<label class="cell">With what are you working?</label>
+					<div class="cell grid-x grid-margin-x">
+						<label class="cell shrink">
+							<input type="radio" name="working_with" value="upvotes" id="gitlab-mr__upvotes">
+							Upvotes (thumbs)
+						</label>
+						<label>
+							<input type="radio" name="working_with" value="approvals" id="gitlab-mr__approval">
+							Approvals
+						</label>
+					</div>
+					<div class="cell grid-x gitlab-mr__settings__upvotes__container">
+						<label for="gitlab-mr__settings__upvotes" class="cell shrink">Upvotes needed</label>
+						<input type="number" min="0" value="2" id="gitlab-mr__settings__upvotes" class="cell small-2">
+					</div>
 				</div>
 				<div class="cell grid-x grid-margin-x margin-top-1 gitlab-mr__align_center">
 					<p class="cell small-6 gitlab-mr__colors__title text-center">Merge request tracking: </p>

@@ -77,3 +77,7 @@ label, input[type="text"], .button{
 	font-size: .9rem;
 	font-weight: 500;
 }
+
+#gitlab-mr .gitlab-mr__settings__container .gitlab-mr__settings__upvotes__container{
+	display: none;
+}

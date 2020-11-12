@@ -7,6 +7,7 @@ let colors = {
 };
 let username;
 let tracking = '';
+let workWith = '';
 
 let projectId;
 let ifInGitlab = document.getElementById('search_project_id');
@@ -30,6 +31,7 @@ if (null !== ifInGitlab && undefined !== ifInGitlab) {
                 apiUrlBase = result.gitlabmr.url[result.gitlabmr.url.length - 1] === '/' ? result.gitlabmr.url : result.gitlabmr.url + '/';
                 apiUrlBase += 'api/v4';
                 tracking = result.gitlabmr.tracking === undefined ? '' : result.gitlabmr.tracking;
+                workWith = result.gitlabmr.working_with === undefined ? 'upvotes' : result.gitlabmr.working_with;
                 if (result.gitlabmr.colors !== undefined) colors = result.gitlabmr.colors;
                 if (result.gitlabmr.upvotes !== undefined && result.gitlabmr.upvotes > 0) upvotesNeeded = result.gitlabmr.upvotes;
                 init(currentUrl);

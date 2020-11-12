@@ -4,6 +4,18 @@ function initConditionalDisplay() {
     getAllMergeRequests(sortMergeRequest);
 }
 
+function getMrIsDone(mrID, isMine) {
+    let xhrApproval = new XMLHttpRequest();
+    xhrApproval.onreadystatechange = function () {
+        if (xhrApproval.readyState === 4) {
+            let res = JSON.parse(xhrApproval.responseText);
+            getUpvoters(mrID, isMine, res.approved === true);
+        }
+    };
+    xhrApproval.open('GET', apiUrlBase + '/projects/' + projectId + '/merge_requests/' + mrID + '/approvals');
+    xhrApproval.send();
+}
+
 function sortMergeRequest() {
     if (xhrGetAllMergeRequests.readyState === 4) {
         mrCondDisplay = JSON.parse(xhrGetAllMergeRequests.responseText);
@@ -13,7 +25,12 @@ function sortMergeRequest() {
                 addOpacityIfNotTracked(mrCondDisplay[key].iid);
                 return;
             }
-            getUpvoters(mrCondDisplay[key].iid, isMine, mrCondDisplay[key].upvotes >= upvotesNeeded && mrCondDisplay[key].downvotes === 0);
+
+            if (workWith === 'upvotes') {
+                getUpvoters(mrCondDisplay[key].iid, isMine, mrCondDisplay[key].upvotes >= upvotesNeeded && mrCondDisplay[key].downvotes === 0);
+            } else {
+                getMrIsDone(mrCondDisplay[key].iid, isMine);
+            }
         });
     }
 }
