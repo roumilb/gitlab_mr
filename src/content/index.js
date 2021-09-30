@@ -41,7 +41,7 @@ if (null !== ifInGitlab && undefined !== ifInGitlab) {
 }
 
 function init(currentUrl) {
-    if (currentUrl.indexOf('dashboard') !== -1) {
+    if (currentUrl.indexOf('dashboard') !== -1 || currentUrl.indexOf('groups') !== -1) {
         initMyMrPage();
     } else {
         projectId = ifInGitlab.value;

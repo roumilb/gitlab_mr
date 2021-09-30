@@ -28,6 +28,10 @@ There is 3 status for a merge request:
 
 # Changelog
 
+### v2.6
+
+* Make the extension work all groups merge request page
+
 ### v2.5
 
 * Fix the extension on my merge request page
