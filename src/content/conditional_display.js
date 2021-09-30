@@ -4,12 +4,12 @@ function initConditionalDisplay() {
     getAllMergeRequests(sortMergeRequest);
 }
 
-function getMrIsDone(mrID, isMine) {
+function getMrIsDone(mrID, isMine, mergeRequestId) {
     let xhrApproval = new XMLHttpRequest();
     xhrApproval.onreadystatechange = function () {
         if (xhrApproval.readyState === 4) {
             let res = JSON.parse(xhrApproval.responseText);
-            getUpvoters(mrID, isMine, res.approved === true);
+            getUpvoters(mrID, isMine, res.approved === true, projectId, mergeRequestId);
         }
     };
     xhrApproval.open('GET', apiUrlBase + '/projects/' + projectId + '/merge_requests/' + mrID + '/approvals');
@@ -22,104 +22,105 @@ function sortMergeRequest() {
         Object.keys(mrCondDisplay).forEach(key => {
             let isMine = mrCondDisplay[key].author.username === username;
             if (!isMine && tracking === 'not_mine') {
-                addOpacityIfNotTracked(mrCondDisplay[key].iid);
+                addOpacityIfNotTracked(mrCondDisplay[key].id);
                 return;
             }
 
             if (workWith === 'upvotes') {
-                getUpvoters(mrCondDisplay[key].iid, isMine, mrCondDisplay[key].upvotes >= upvotesNeeded && mrCondDisplay[key].downvotes === 0);
+                getUpvoters(
+                    mrCondDisplay[key].iid,
+                    isMine,
+                    mrCondDisplay[key].upvotes >= upvotesNeeded && mrCondDisplay[key].downvotes === 0,
+                    projectId,
+                    mrCondDisplay[key].id
+                );
             } else {
-                getMrIsDone(mrCondDisplay[key].iid, isMine);
+                getMrIsDone(mrCondDisplay[key].iid, isMine, mrCondDisplay[key].id);
             }
         });
     }
 }
 
-function addOpacityIfNotTracked(id) {
-    let allIssues = document.getElementsByClassName('issuable-reference');
-    for (let key = 0 ; key < allIssues.length ; key++) {
-        if (allIssues[key].innerHTML.trim().indexOf('!' + id) !== -1) {
-            let issue = allIssues[key].closest('.issuable-info-container');
-            issue.style.opacity = '.5';
-        }
+function addOpacityIfNotTracked(mergeRequestId) {
+    let issue = document.getElementById(`merge_request_${mergeRequestId}`).getElementsByClassName('issuable-info-container')[0];
+    if (issue === null) return;
+    issue.style.opacity = '.5';
+}
+
+function displayStatusMr(mergeRequestId) {
+    let issue = document.getElementById(`merge_request_${mergeRequestId}`).getElementsByClassName('issuable-info-container')[0];
+    if (issue === null) return;
+    issue.style.borderLeft = '5px solid ' + colors[mergeRequestStatus[mergeRequestId].status];
+    issue.style.paddingLeft = '10px';
+    if (undefined !== mergeRequestStatus[mergeRequestId].message && '' !== mergeRequestStatus[mergeRequestId].message) {
+        issue.querySelector('.merge-request-title').innerHTML += '<span>(' + mergeRequestStatus[mergeRequestId].message + ')</span>';
     }
 }
 
-function displayStatusMr(id) {
-    let allIssues = document.getElementsByClassName('issuable-reference');
-    for (let key = 0 ; key < allIssues.length ; key++) {
-        if (allIssues[key].innerHTML.trim().indexOf('!' + id) !== -1) {
-            let issue = allIssues[key].closest('.issuable-info-container');
-            issue.style.borderLeft = '5px solid ' + colors[mergeRequestStatus[id].status];
-            issue.style.paddingLeft = '10px';
-            if (undefined !== mergeRequestStatus[id].message && '' !== mergeRequestStatus[id].message) {
-                issue.querySelector('.merge-request-title').innerHTML += '<span>(' + mergeRequestStatus[id].message + ')</span>';
-            }
-            break;
-        }
-    }
-}
-
-function newCallForDiscussions(id, isMine, isDone) {
-    mergeRequestStatus[id] = {
+function newCallForDiscussions(id, isMine, isDone, projectID, mergeRequestId) {
+    if (undefined === projectID) projectID = projectId;
+    mergeRequestStatus[mergeRequestId] = {
         'status': 'wait'
     };
-    xhrCondDisplay[id] = new XMLHttpRequest();
-    xhrCondDisplay[id].onreadystatechange = function () {
+    xhrCondDisplay[mergeRequestId] = new XMLHttpRequest();
+    xhrCondDisplay[mergeRequestId].onreadystatechange = function () {
         if (isMine) {
-            handleMyMrCall(id, isDone);
+            handleMyMrCall(id, isDone, mergeRequestId);
         } else {
-            handleOtherMrCall(id, isDone);
+            handleOtherMrCall(id, isDone, mergeRequestId);
         }
     };
-    xhrCondDisplay[id].open('GET', apiUrlBase + '/projects/' + projectId + '/merge_requests/' + id + '/discussions?per_page=100');
-    xhrCondDisplay[id].send();
+
+    xhrCondDisplay[mergeRequestId].open('GET', `${apiUrlBase}/projects/${projectID}/merge_requests/${id}/discussions?per_page=100`);
+    xhrCondDisplay[mergeRequestId].send();
 }
 
-function getUpvoters(id, isMine, isDone) {
-    xhrUpvoters[id] = new XMLHttpRequest();
-    xhrUpvoters[id].onreadystatechange = function () {
-        if (xhrUpvoters[id].readyState === 4) {
-            myUpvotes[id] = false;
-            let upvotes = JSON.parse(xhrUpvoters[id].responseText);
+function getUpvoters(id, isMine, isDone, projectID, mergeRequestId) {
+    if (undefined === projectID) projectID = projectId;
+    xhrUpvoters[mergeRequestId] = new XMLHttpRequest();
+    xhrUpvoters[mergeRequestId].onreadystatechange = function () {
+        if (xhrUpvoters[mergeRequestId].readyState === 4) {
+            myUpvotes[mergeRequestId] = false;
+            let upvotes = JSON.parse(xhrUpvoters[mergeRequestId].responseText);
             if (upvotes.length > 0) {
                 for (let [key, value] of Object.entries(upvotes)) {
                     if (value.name === 'thumbsup' && value.user.username === username) {
-                        myUpvotes[id] = true;
+                        myUpvotes[mergeRequestId] = true;
                     }
                 }
             }
-            newCallForDiscussions(id, isMine, isDone);
+            newCallForDiscussions(id, isMine, isDone, projectID, mergeRequestId);
         }
     };
-    xhrUpvoters[id].open('GET', apiUrlBase + '/projects/' + projectId + '/merge_requests/' + id + '/award_emoji');
-    xhrUpvoters[id].send();
+    xhrUpvoters[mergeRequestId].open('GET', apiUrlBase + '/projects/' + projectID + '/merge_requests/' + id + '/award_emoji');
+    xhrUpvoters[mergeRequestId].send();
 }
 
-//HANDLE MY MARGE REQUESTS
+//HANDLE MY MERGE REQUESTS
 
-function handleMyMrCall(id, isDone) {
-    if (xhrCondDisplay[id].readyState === 4) {
-        allDiscussions = JSON.parse(xhrCondDisplay[id].responseText);
+function handleMyMrCall(id, isDone, mergeRequestId) {
+    if (xhrCondDisplay[mergeRequestId].readyState === 4) {
+        allDiscussions = JSON.parse(xhrCondDisplay[mergeRequestId].responseText);
         let status = [];
         Object.keys(allDiscussions).forEach(discussionKey => {
             if (allDiscussions[discussionKey].notes[0].resolvable) {
                 status.push(handleDiscussionMyMr(id, discussionKey));
             }
         });
-        mergeRequestStatus[id] = {
+        if (status.length === 0) status.push('wait');
+        mergeRequestStatus[mergeRequestId] = {
             'status': status.indexOf('actions') !== -1 || isDone ? 'actions' : 'wait',
             'message': isDone && status.indexOf('wait') !== -1 ? 'Can be merged!' : ''
         };
-        displayStatusMr(id);
+        displayStatusMr(mergeRequestId);
     }
 }
 
 //HANDLE OTHERS MARGE REQUESTS
 
-function handleOtherMrCall(id, isDone) {
-    if (xhrCondDisplay[id].readyState === 4) {
-        allDiscussions = JSON.parse(xhrCondDisplay[id].responseText);
+function handleOtherMrCall(id, isDone, mergeRequestId) {
+    if (xhrCondDisplay[mergeRequestId].readyState === 4) {
+        allDiscussions = JSON.parse(xhrCondDisplay[mergeRequestId].responseText);
         let counts = {
             my_discussions: 0,
             my_discussions_resolved: 0,
@@ -150,25 +151,25 @@ function handleOtherMrCall(id, isDone) {
             }
         });
         if (!participated && tracking === 'not_mine_participate') {
-            addOpacityIfNotTracked(id);
+            addOpacityIfNotTracked(mergeRequestId);
             return;
         }
         let message = '';
         let status = 'done';
-        if (myUpvotes[id] && counts.my_discussions_resolved === counts.my_discussions) {
+        if (myUpvotes[mergeRequestId] && counts.my_discussions_resolved === counts.my_discussions) {
             status = 'done';
-        } else if (!isDone && !myUpvotes[id] && (0 === counts.my_discussions || (counts.my_discussions_resolved
-                                                                                 === counts.my_discussions
-                                                                                 && counts.my_discussions_not_resolved_need_wait
-                                                                                 < 1) || counts.my_discussions_not_resolved_to_count > 0)) {
+        } else if (!isDone && !myUpvotes[mergeRequestId] && (0 === counts.my_discussions || (counts.my_discussions_resolved
+                                                                                             === counts.my_discussions
+                                                                                             && counts.my_discussions_not_resolved_need_wait
+                                                                                             < 1) || counts.my_discussions_not_resolved_to_count > 0)) {
             status = 'actions';
         } else if (!isDone && counts.my_discussions_not_resolved_need_wait > 0) {
             status = 'wait';
         }
-        mergeRequestStatus[id] = {
+        mergeRequestStatus[mergeRequestId] = {
             'status': status,
             'message': message
         };
-        displayStatusMr(id);
+        displayStatusMr(mergeRequestId);
     }
 }

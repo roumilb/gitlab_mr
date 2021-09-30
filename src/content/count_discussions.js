@@ -22,12 +22,15 @@ function handleFirstCall() {
     }
 }
 
-function handelAllMr(key) {
+function handelAllMr(key, projectID) {
+    if (undefined === projectID) projectID = projectId;
     xhrArrayCountDiscussions[key] = new XMLHttpRequest();
     xhrArrayCountDiscussions[key].onreadystatechange = function () {
         handleMrCall(key);
     };
-    xhrArrayCountDiscussions[key].open('GET', apiUrlBase + '/projects/' + projectId + '/merge_requests/' + mergeRequestsCountDiscussion[key].iid + '/discussions?per_page=100');
+    xhrArrayCountDiscussions[key].open('GET',
+        `${apiUrlBase}/projects/${projectID}/merge_requests/${mergeRequestsCountDiscussion[key].iid}/discussions?per_page=100`
+    );
     xhrArrayCountDiscussions[key].send();
 }
 
@@ -36,12 +39,12 @@ function handleMrCall(key) {
         discussions = JSON.parse(xhrArrayCountDiscussions[key].responseText);
         countDiscussion[key] = {
             'notResolved': 0,
-            'total': 0,
+            'total': 0
         };
         Object.keys(discussions).forEach(discussion => {
             handleDiscussions(key, discussion);
         });
-        findAndReplace(mergeRequestsCountDiscussion[key].iid, countDiscussion[key]);
+        findAndReplace(mergeRequestsCountDiscussion[key].id, countDiscussion[key]);
     }
 }
 
@@ -55,18 +58,13 @@ function handleDiscussions(key, discussion) {
 }
 
 function findAndReplace(requestId, count) {
-    let allIssues = document.getElementsByClassName('issuable-reference');
-    for (let key = 0 ; key < allIssues.length ; key++) {
-        if (allIssues[key].innerHTML.trim().indexOf('!' + requestId) !== -1) {
-            count.resolved = count.total >= count.notResolved ? count.total - count.notResolved : 0;
-            addHtml(allIssues, count, key);
-            break;
-        }
-    }
+    const issue = document.getElementById(`merge_request_${requestId}`).getElementsByClassName('issuable-info-container')[0];
+    if (issue === null) return;
+    count.resolved = count.total >= count.notResolved ? count.total - count.notResolved : 0;
+    addHtml(issue, count);
 }
 
-function addHtml(allIssues, count, key) {
-    let container = allIssues[key].closest('.issuable-info-container');
+function addHtml(container, count) {
     let discNow = container.getElementsByClassName('issuable-meta')[0];
     discNow.getElementsByClassName('issuable-comments')[0].innerHTML += ' comments';
     discNow.innerHTML += '<div class="merge_request_acyboys">Discussions resolved: ' + count.resolved + '/' + count.total + '</div>';
