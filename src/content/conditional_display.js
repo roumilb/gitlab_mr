@@ -136,16 +136,17 @@ function handleOtherMrCall(id, isDone, mergeRequestId) {
                 });
             }
             if (notes[0].resolvable) {
+                let lastNoteKey = getLastNoteKey(notes, notes.length);
                 if (username === notes[0].author.username) {
                     counts.my_discussions++;
                     if (notes[0].resolved) {
                         counts.my_discussions_resolved++;
-                    } else if (!notes[0].resolved && username !== notes[notes.length - 1].author.username) {
+                    } else if (!notes[0].resolved && username !== notes[lastNoteKey].author.username) {
                         counts.my_discussions_not_resolved_to_count++;
                     } else {
                         counts.my_discussions_not_resolved_need_wait++;
                     }
-                } else if (username !== notes[0].author.username && !notes[0].resolved && username === notes[notes.length - 1].author.username) {
+                } else if (username !== notes[0].author.username && !notes[0].resolved && username === notes[lastNoteKey].author.username) {
                     counts.my_discussions_not_resolved_need_wait++;
                 }
             }
@@ -172,4 +173,8 @@ function handleOtherMrCall(id, isDone, mergeRequestId) {
         };
         displayStatusMr(mergeRequestId);
     }
+}
+
+function getLastNoteKey(notes, length) {
+    return notes[length - 1].system ? getLastNoteKey(notes, length - 1) : length - 1;
 }

@@ -58,7 +58,9 @@ function handleDiscussions(key, discussion) {
 }
 
 function findAndReplace(requestId, count) {
-    const issue = document.getElementById(`merge_request_${requestId}`).getElementsByClassName('issuable-info-container')[0];
+    const mergeRequest = document.getElementById(`merge_request_${requestId}`);
+    if (!mergeRequest) return;
+    const issue = mergeRequest.getElementsByClassName('issuable-info-container')[0];
     if (issue === null) return;
     count.resolved = count.total >= count.notResolved ? count.total - count.notResolved : 0;
     addHtml(issue, count);
