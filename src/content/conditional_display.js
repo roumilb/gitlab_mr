@@ -1,14 +1,15 @@
-let mergeRequestStatus = {}, mrCondDisplay, xhrCondDisplay = [], allDiscussions, xhrUpvoters = [], myUpvotes = {};
+const mergeRequestStatus = {}, xhrCondDisplay = [], xhrUpvoters = [], myUpvotes = {};
+let mrCondDisplay, allDiscussions;
 
 function initConditionalDisplay() {
     getAllMergeRequests(sortMergeRequest);
 }
 
 function getMrIsDone(mrID, isMine, mergeRequestId) {
-    let xhrApproval = new XMLHttpRequest();
+    const xhrApproval = new XMLHttpRequest();
     xhrApproval.onreadystatechange = function () {
         if (xhrApproval.readyState === 4) {
-            let res = JSON.parse(xhrApproval.responseText);
+            const res = JSON.parse(xhrApproval.responseText);
             getUpvoters(mrID, isMine, res.approved === true, projectId, mergeRequestId);
         }
     };
@@ -17,10 +18,10 @@ function getMrIsDone(mrID, isMine, mergeRequestId) {
 }
 
 function sortMergeRequest() {
-    if (xhrGetAllMergeRequests.readyState === 4) {
+    if (xhrGetAllMergeRequests.readyState === 4 && xhrGetAllMergeRequests.status >= 200 && xhrGetAllMergeRequests.status <= 299) {
         mrCondDisplay = JSON.parse(xhrGetAllMergeRequests.responseText);
         Object.keys(mrCondDisplay).forEach(key => {
-            let isMine = mrCondDisplay[key].author.username === username;
+            const isMine = mrCondDisplay[key].author.username === username;
             if (!isMine && tracking === 'not_mine') {
                 addOpacityIfNotTracked(mrCondDisplay[key].id);
                 return;
@@ -42,13 +43,17 @@ function sortMergeRequest() {
 }
 
 function addOpacityIfNotTracked(mergeRequestId) {
-    let issue = document.getElementById(`merge_request_${mergeRequestId}`).getElementsByClassName('issuable-info-container')[0];
+    const issue = document.getElementById(`merge_request_${mergeRequestId}`).getElementsByClassName('issuable-info-container')[0];
     if (issue === null) return;
     issue.style.opacity = '.5';
 }
 
 function displayStatusMr(mergeRequestId) {
-    let issue = document.getElementById(`merge_request_${mergeRequestId}`).getElementsByClassName('issuable-info-container')[0];
+    const issueContainer = document.getElementById(`merge_request_${mergeRequestId}`);
+    if (!issueContainer) {
+        return;
+    }
+    const issue = document.getElementById(`merge_request_${mergeRequestId}`).getElementsByClassName('issuable-info-container')[0];
     if (issue === null) return;
     issue.style.borderLeft = '5px solid ' + colors[mergeRequestStatus[mergeRequestId].status];
     issue.style.paddingLeft = '10px';
@@ -81,9 +86,9 @@ function getUpvoters(id, isMine, isDone, projectID, mergeRequestId) {
     xhrUpvoters[mergeRequestId].onreadystatechange = function () {
         if (xhrUpvoters[mergeRequestId].readyState === 4) {
             myUpvotes[mergeRequestId] = false;
-            let upvotes = JSON.parse(xhrUpvoters[mergeRequestId].responseText);
+            const upvotes = JSON.parse(xhrUpvoters[mergeRequestId].responseText);
             if (upvotes.length > 0) {
-                for (let [key, value] of Object.entries(upvotes)) {
+                for (const [, value] of Object.entries(upvotes)) {
                     if (value.name === 'thumbsup' && value.user.username === username) {
                         myUpvotes[mergeRequestId] = true;
                     }
@@ -101,16 +106,16 @@ function getUpvoters(id, isMine, isDone, projectID, mergeRequestId) {
 function handleMyMrCall(id, isDone, mergeRequestId) {
     if (xhrCondDisplay[mergeRequestId].readyState === 4) {
         allDiscussions = JSON.parse(xhrCondDisplay[mergeRequestId].responseText);
-        let status = [];
+        const status = [];
         Object.keys(allDiscussions).forEach(discussionKey => {
             if (allDiscussions[discussionKey].notes[0].resolvable) {
-                status.push(handleDiscussionMyMr(id, discussionKey));
+                status.push(...handleDiscussionMyMr(id, discussionKey));
             }
         });
         if (status.length === 0) status.push('wait');
         mergeRequestStatus[mergeRequestId] = {
-            'status': status.indexOf('actions') !== -1 || isDone ? 'actions' : 'wait',
-            'message': isDone && status.indexOf('wait') !== -1 ? 'Can be merged!' : ''
+            status: status.indexOf('actions') !== -1 || isDone ? 'actions' : 'wait',
+            message: isDone && !status.includes('not-resolved') ? 'Can be merged!' : ''
         };
         displayStatusMr(mergeRequestId);
     }
@@ -121,7 +126,7 @@ function handleMyMrCall(id, isDone, mergeRequestId) {
 function handleOtherMrCall(id, isDone, mergeRequestId) {
     if (xhrCondDisplay[mergeRequestId].readyState === 4) {
         allDiscussions = JSON.parse(xhrCondDisplay[mergeRequestId].responseText);
-        let counts = {
+        const counts = {
             my_discussions: 0,
             my_discussions_resolved: 0,
             my_discussions_not_resolved_to_count: 0,
@@ -129,14 +134,14 @@ function handleOtherMrCall(id, isDone, mergeRequestId) {
         };
         let participated = false;
         Object.keys(allDiscussions).forEach(discussionKey => {
-            let notes = allDiscussions[discussionKey].notes;
+            const notes = allDiscussions[discussionKey].notes;
             if (tracking === 'not_mine_participate') {
                 notes.map(note => {
                     if (note.author.username === username) participated = true;
                 });
             }
             if (notes[0].resolvable) {
-                let lastNoteKey = getLastNoteKey(notes, notes.length);
+                const lastNoteKey = getLastNoteKey(notes, notes.length);
                 if (username === notes[0].author.username) {
                     counts.my_discussions++;
                     if (notes[0].resolved) {
@@ -168,8 +173,8 @@ function handleOtherMrCall(id, isDone, mergeRequestId) {
             status = 'wait';
         }
         mergeRequestStatus[mergeRequestId] = {
-            'status': status,
-            'message': message
+            status,
+            message
         };
         displayStatusMr(mergeRequestId);
     }

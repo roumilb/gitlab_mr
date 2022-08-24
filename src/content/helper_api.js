@@ -1,4 +1,4 @@
-let xhrGetAllMergeRequests = new XMLHttpRequest();
+const xhrGetAllMergeRequests = new XMLHttpRequest();
 
 function getAllMergeRequests(functionHandle) {
     xhrGetAllMergeRequests.onreadystatechange = functionHandle;
@@ -7,9 +7,17 @@ function getAllMergeRequests(functionHandle) {
 }
 
 function handleDiscussionMyMr(id, discussionKey) {
-    if (!allDiscussions[discussionKey].notes[0].resolved && username !== allDiscussions[discussionKey].notes[allDiscussions[discussionKey].notes.length - 1].author.username) {
-        return 'actions';
+    const discussion = allDiscussions[discussionKey].notes;
+    const arrayToReturn = [];
+
+    if (!discussion[0].resolved) {
+        arrayToReturn.push('not-resolved');
+        if (username !== discussion[discussion.length - 1].author.username) {
+            arrayToReturn.push('actions');
+        }
     } else {
-        return 'wait';
+        arrayToReturn.push('wait');
     }
+
+    return arrayToReturn;
 }

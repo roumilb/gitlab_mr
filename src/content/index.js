@@ -1,19 +1,19 @@
 let upvotesNeeded = 2;
-let apiUrlBase;
 let colors = {
     'actions': '#FF2D00',
     'wait': '#FFDC00',
     'done': '#00E90E'
 };
+let apiUrlBase;
 let username;
 let tracking = '';
 let workWith = '';
 
 let projectId;
-let ifInGitlab = document.getElementById('search_project_id');
+const ifInGitlab = document.getElementById('search_project_id');
 
 if (null !== ifInGitlab && undefined !== ifInGitlab) {
-    let currentUrl = window.location.toString();
+    const currentUrl = window.location.toString();
 
     chrome.storage.sync.get(['gitlabmr'], function (result) {
         if (undefined
