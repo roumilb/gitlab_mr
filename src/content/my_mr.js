@@ -1,9 +1,9 @@
-let xhrMyMrProjects = [];
-let xhrMyMergeRequests = [];
-let infoMyMergeRequest = [];
+const xhrMyMrProjects = [];
+const xhrMyMergeRequests = [];
+const infoMyMergeRequest = [];
 
 function initMyMrPage() {
-    let mergeRequests = document.querySelectorAll('li.merge-request .merge-request-title-text a');
+    const mergeRequests = document.querySelectorAll('li.merge-request .merge-request-title-text a');
     if (mergeRequests.length < 1) return true;
     mergeRequestsCountDiscussion = {};
     for (let i = 0 ; i < mergeRequests.length ; i++) {
@@ -36,8 +36,7 @@ function getMergeRequestMyMR(projectID, mrId) {
     xhrMyMergeRequests[`${projectID}-${mrId}`] = new XMLHttpRequest();
     xhrMyMergeRequests[`${projectID}-${mrId}`].onreadystatechange = function () {
         if (xhrMyMergeRequests[`${projectID}-${mrId}`].readyState === 4) {
-            let mergeRequest = JSON.parse(xhrMyMergeRequests[`${projectID}-${mrId}`].responseText);
-            mergeRequest = mergeRequest[0];
+            const mergeRequest = JSON.parse(xhrMyMergeRequests[`${projectID}-${mrId}`].responseText)[0];
 
             mergeRequestsCountDiscussion[`${projectID}-${mrId}`] = mergeRequest;
             // mergeRequestsCountDiscussion.push(mergeRequest);

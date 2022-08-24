@@ -1,7 +1,7 @@
-let xhrCountDiscussions = new XMLHttpRequest();
+const xhrCountDiscussions = new XMLHttpRequest();
 let mergeRequestsCountDiscussion, discussions;
-let xhrArrayCountDiscussions = [];
-let countDiscussion = [];
+const xhrArrayCountDiscussions = [];
+const countDiscussion = [];
 
 function initCountDiscussions() {
     firstCall();
@@ -14,7 +14,7 @@ function firstCall() {
 }
 
 function handleFirstCall() {
-    if (xhrCountDiscussions.readyState === 4) {
+    if (xhrCountDiscussions.readyState === 4 && xhrCountDiscussions.status >= 200 && xhrCountDiscussions.status <= 299) {
         mergeRequestsCountDiscussion = JSON.parse(xhrCountDiscussions.responseText);
         Object.keys(mergeRequestsCountDiscussion).forEach(key => {
             handelAllMr(key);
@@ -67,7 +67,7 @@ function findAndReplace(requestId, count) {
 }
 
 function addHtml(container, count) {
-    let discNow = container.getElementsByClassName('issuable-meta')[0];
+    const discNow = container.getElementsByClassName('issuable-meta')[0];
     discNow.getElementsByClassName('issuable-comments')[0].innerHTML += ' comments';
     discNow.innerHTML += '<div class="merge_request_acyboys">Discussions resolved: ' + count.resolved + '/' + count.total + '</div>';
 }
