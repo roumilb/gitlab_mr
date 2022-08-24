@@ -8,10 +8,16 @@ function getAllMergeRequests(functionHandle) {
 
 function handleDiscussionMyMr(id, discussionKey) {
     const discussion = allDiscussions[discussionKey].notes;
+    const arrayToReturn = [];
 
-    if (!discussion[0].resolved || username !== discussion[discussion.length - 1].author.username) {
-        return 'actions';
+    if (!discussion[0].resolved) {
+        arrayToReturn.push('not-resolved');
+        if (username !== discussion[discussion.length - 1].author.username) {
+            arrayToReturn.push('actions');
+        }
     } else {
-        return 'wait';
+        arrayToReturn.push('wait');
     }
+
+    return arrayToReturn;
 }

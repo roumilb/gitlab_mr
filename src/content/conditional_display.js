@@ -109,14 +109,13 @@ function handleMyMrCall(id, isDone, mergeRequestId) {
         const status = [];
         Object.keys(allDiscussions).forEach(discussionKey => {
             if (allDiscussions[discussionKey].notes[0].resolvable) {
-                status.push(handleDiscussionMyMr(id, discussionKey));
+                status.push(...handleDiscussionMyMr(id, discussionKey));
             }
         });
         if (status.length === 0) status.push('wait');
         mergeRequestStatus[mergeRequestId] = {
             status: status.indexOf('actions') !== -1 || isDone ? 'actions' : 'wait',
-            message: isDone && !status.includes('actions') ? 'Can be merged!' : ''
-            // 'message': isDone && status.indexOf('wait') !== -1 ? 'Can be merged!' : ''
+            message: isDone && !status.includes('not-resolved') ? 'Can be merged!' : ''
         };
         displayStatusMr(mergeRequestId);
     }
