@@ -1,10 +1,10 @@
 # Gitlab merge requests tools
 
-This is a chrome extension to have a better display on the merge request page.
+This is a Google Chrome extension to enhance the Gitlab merge request UI.
 
 chrome store: https://chrome.google.com/webstore/detail/gitlab-mr-tools/gefblbbchjoiikjegebbmilelbecgcaa
 
-# How it works
+## How it works
 
 There is 3 status for a merge request:
 
@@ -26,7 +26,12 @@ There is 3 status for a merge request:
 
 **You created the merge request:** none
 
-# Changelog
+## Changelog
+
+### v3.0
+
+* Save the configuration automatically
+* Don't display the done color if we still have discussions not resolved even if we approved the MR 
 
 ### v2.6
 

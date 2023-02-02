@@ -1,7 +1,7 @@
 {
-    "name": "Gitlab merge request tools",
-    "version": "2.7.0",
-    "description": "Gitlab merge request tools",
+    "name": "Gitlab enhancer",
+    "version": "3.0",
+    "description": "Gitlab extension to enhance the user experience on the merger request process",
     "permissions": [
         "storage",
         "activeTab"

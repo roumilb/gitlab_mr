@@ -160,10 +160,14 @@ function handleOtherMrCall(id, isDone, mergeRequestId) {
             addOpacityIfNotTracked(mergeRequestId);
             return;
         }
-        let message = '';
+        const message = '';
         let status = 'done';
-        if (myUpvotes[mergeRequestId] && counts.my_discussions_resolved === counts.my_discussions) {
-            status = 'done';
+        if (myUpvotes[mergeRequestId] || isDone) {
+            if (counts.my_discussions_resolved === counts.my_discussions) {
+                status = 'done';
+            } else {
+                status = 'actions';
+            }
         } else if (!isDone && !myUpvotes[mergeRequestId] && (0 === counts.my_discussions || (counts.my_discussions_resolved
                                                                                              === counts.my_discussions
                                                                                              && counts.my_discussions_not_resolved_need_wait

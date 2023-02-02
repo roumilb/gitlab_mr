@@ -41,18 +41,18 @@ chrome.storage.sync.get(['gitlabmr'], function (result) {
     }
 });
 
-document.getElementById('save').addEventListener('click', (event) => {
-    let usernamePopup = document.getElementById('gitlab-mr__settings__username').value;
-    let urlPopup = document.getElementById('gitlab-mr__settings__url').value;
-    let upvotesPopup = document.getElementById('gitlab-mr__settings__upvotes').value;
-    let colorsPopup = {
+function saveOptions() {
+    const usernamePopup = document.getElementById('gitlab-mr__settings__username').value;
+    const urlPopup = document.getElementById('gitlab-mr__settings__url').value;
+    const upvotesPopup = document.getElementById('gitlab-mr__settings__upvotes').value;
+    const colorsPopup = {
         actions: document.getElementById('gitlab-mr__color_action').value,
         wait: document.getElementById('gitlab-mr__color_wait').value,
         done: document.getElementById('gitlab-mr__color_done').value
     };
-    let tracking = document.getElementById('gitlab-mr__track__mr').value;
-    let workWith = document.querySelector('input[name="working_with"]:checked').value;
-    let options = {
+    const tracking = document.getElementById('gitlab-mr__track__mr').value;
+    const workWith = document.querySelector('input[name="working_with"]:checked').value;
+    const options = {
         username: usernamePopup,
         url: urlPopup,
         colors: colorsPopup,
@@ -67,4 +67,26 @@ document.getElementById('save').addEventListener('click', (event) => {
             savedContainer.innerHTML = '';
         }, 2000);
     });
+}
+
+document.querySelectorAll('[type="text"], [type="number"]').forEach((element) => {
+    element.addEventListener('keydown', (event) => {
+        setTimeout(() => {
+            saveOptions();
+        }, 100);
+    });
+});
+
+document.querySelectorAll('[type="radio"], [type="color"], select').forEach((element) => {
+    element.addEventListener('change', (event) => {
+        setTimeout(() => {
+            saveOptions();
+        }, 100);
+    });
+});
+
+document.getElementById('save').addEventListener('click', (event) => {
+    setTimeout(() => {
+        saveOptions();
+    }, 100);
 });
