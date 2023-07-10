@@ -1,10 +1,9 @@
 {
     "name": "Gitlab enhancer",
-    "version": "3.0",
+    "version": "3.1",
     "description": "Gitlab extension to enhance the user experience on the merger request process",
     "permissions": [
-        "storage",
-        "activeTab"
+        "storage"
     ],
     "action": {
         "default_popup": "src/popup/index.html",
