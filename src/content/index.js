@@ -44,7 +44,11 @@ function init(currentUrl) {
     if (currentUrl.indexOf('dashboard') !== -1 || currentUrl.indexOf('groups') !== -1) {
         initMyMrPage();
     } else {
-        projectId = ifInGitlab.value;
+        const projectIdInput = document.getElementById('project_id');
+        if (null === projectIdInput && undefined === projectIdInput) {
+            return;
+        }
+        projectId = projectIdInput.value;
         if (undefined === projectId) return false;
         initCountDiscussions();
         initConditionalDisplay();

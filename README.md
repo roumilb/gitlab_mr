@@ -28,6 +28,10 @@ There is 3 status for a merge request:
 
 ## Changelog
 
+### v3.3
+
+* Fix extension not loading on new gitlab version in specific project
+
 ### v3.2
 
 * Fix extension not loading on new gitlab version
@@ -35,7 +39,7 @@ There is 3 status for a merge request:
 ### v3.0
 
 * Save the configuration automatically
-* Don't display the done color if we still have discussions not resolved even if we approved the MR 
+* Don't display the done color if we still have discussions not resolved even if we approved the MR
 
 ### v2.6
 

@@ -1,6 +1,6 @@
 {
     "name": "Gitlab enhancer",
-    "version": "3.2",
+    "version": "3.3",
     "description": "Gitlab extension to enhance the user experience on the merger request process",
     "permissions": [
         "storage"
