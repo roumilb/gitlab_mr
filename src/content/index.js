@@ -10,7 +10,7 @@ let tracking = '';
 let workWith = '';
 
 let projectId;
-const ifInGitlab = document.getElementById('search_project_id');
+const ifInGitlab = document.querySelector('.tanuki-logo');
 
 if (null !== ifInGitlab && undefined !== ifInGitlab) {
     const currentUrl = window.location.toString();

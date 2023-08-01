@@ -28,6 +28,10 @@ There is 3 status for a merge request:
 
 ## Changelog
 
+### v3.2
+
+* Fix extension not loading on new gitlab version
+
 ### v3.0
 
 * Save the configuration automatically
