@@ -68,6 +68,6 @@ function findAndReplace(requestId, count) {
 
 function addHtml(container, count) {
     const discNow = container.getElementsByClassName('issuable-meta')[0];
-    discNow.getElementsByClassName('issuable-comments')[0].innerHTML += ' comments';
+    discNow.querySelectorAll('[data-testid="issuable-comments"]')[0].innerHTML += ' comments';
     discNow.innerHTML += '<div class="merge_request_acyboys">Discussions resolved: ' + count.resolved + '/' + count.total + '</div>';
 }

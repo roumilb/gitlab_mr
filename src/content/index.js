@@ -44,11 +44,11 @@ function init(currentUrl) {
     if (currentUrl.indexOf('dashboard') !== -1 || currentUrl.indexOf('groups') !== -1) {
         initMyMrPage();
     } else {
-        const projectIdInput = document.getElementById('project_id');
-        if (null === projectIdInput && undefined === projectIdInput) {
+        const body = document.querySelector('body[data-project-id]');
+        if (null === body && undefined === body) {
             return;
         }
-        projectId = projectIdInput.value;
+        projectId = body.dataset.projectId;
         if (undefined === projectId) return false;
         initCountDiscussions();
         initConditionalDisplay();
