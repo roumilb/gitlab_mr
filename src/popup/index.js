@@ -1,9 +1,3 @@
-let colors = {
-    actions: '#FF2D00',
-    wait: '#FFDC00',
-    done: '#00E90E'
-};
-
 function changeStatusWorkWith() {
     if (this.value === 'upvotes') {
         document.querySelector('.gitlab-mr__settings__upvotes__container').style.display = 'flex';
@@ -16,29 +10,52 @@ document.getElementById('gitlab-mr__upvotes').addEventListener('change', changeS
 document.getElementById('gitlab-mr__approval').addEventListener('change', changeStatusWorkWith);
 
 chrome.storage.sync.get(['gitlabmr'], function (result) {
+    // default option values
+
+    let username = '';
+    let gitlabUrl = '';
+
+    let workWith = 'upvotes';
+    let upvotes = 2;
+    let tracking = '';
+    let colors = {
+        actions: '#FF2D00',
+        wait: '#FFDC00',
+        done: '#00E90E'
+    };
+
     if (result.gitlabmr !== undefined) {
-        document.getElementById('gitlab-mr__settings__username').value = result.gitlabmr.username === undefined ? '' : result.gitlabmr.username;
-        document.getElementById('gitlab-mr__settings__url').value = result.gitlabmr.url === undefined ? '' : result.gitlabmr.url;
-        document.getElementById('gitlab-mr__color_action').value = result.gitlabmr.colors.actions === undefined
-                                                                   ? colors.actions
-                                                                   : result.gitlabmr.colors.actions;
-        document.getElementById('gitlab-mr__color_wait').value = result.gitlabmr.colors.wait === undefined ? colors.wait : result.gitlabmr.colors.wait;
-        document.getElementById('gitlab-mr__color_done').value = result.gitlabmr.colors.done === undefined ? colors.done : result.gitlabmr.colors.done;
-        document.getElementById('gitlab-mr__track__mr').value = result.gitlabmr.tracking === undefined ? '' : result.gitlabmr.tracking;
-        document.getElementById('gitlab-mr__settings__upvotes').value = result.gitlabmr.upvotes === undefined ? 2 : result.gitlabmr.upvotes;
-        if ((result.gitlabmr.working_with === undefined && result.gitlabmr.upvotes === undefined) || result.gitlabmr.working_with === 'approvals') {
-            document.getElementById('gitlab-mr__approval').checked = true;
-        } else {
-            document.getElementById('gitlab-mr__upvotes').checked = true;
-            let event = new Event('change');
-            document.getElementById('gitlab-mr__upvotes').dispatchEvent(event);
-        }
-    } else {
-        document.getElementById('gitlab-mr__color_action').value = colors.actions;
-        document.getElementById('gitlab-mr__color_wait').value = colors.wait;
-        document.getElementById('gitlab-mr__color_done').value = colors.done;
-        document.getElementById('gitlab-mr__color_done').value = colors.done;
+        if (result.gitlabmr.username !== undefined) username = result.gitlabmr.username;
+        if (result.gitlabmr.url !== undefined) gitlabUrl = result.gitlabmr.url;
+        if (result.gitlabmr.working_with !== undefined) workWith = result.gitlabmr.working_with;
+        if (result.gitlabmr.upvotes !== undefined) upvotes = result.gitlabmr.upvotes;
+        if (result.gitlabmr.tracking !== undefined) tracking = result.gitlabmr.tracking;
+        if (result.gitlabmr.colors !== undefined) colors = result.gitlabmr.colors;
     }
+
+    if (!username && !gitlabUrl) {
+        //TODO get the username and url from the current page if possible
+        // const gitlabProfileLink = document.querySelector('.gl-new-dropdown-item-content[data-track-label="user_profile"]');
+        // if (gitlabProfileLink) {
+        //     username = gitlabProfileLink.getAttribute('href').split('/').pop();
+        //     gitlabUrl = window.location.origin;
+        // }
+    }
+
+    document.getElementById('gitlab-mr__settings__username').value = username;
+    document.getElementById('gitlab-mr__settings__url').value = gitlabUrl;
+    if (result.gitlabmr.working_with === 'approvals') {
+        document.getElementById('gitlab-mr__approval').checked = true;
+    } else {
+        document.getElementById('gitlab-mr__upvotes').checked = true;
+        let event = new Event('change');
+        document.getElementById('gitlab-mr__upvotes').dispatchEvent(event);
+    }
+    document.getElementById('gitlab-mr__settings__upvotes').value = upvotes;
+    document.getElementById('gitlab-mr__track__mr').value = tracking;
+    document.getElementById('gitlab-mr__color_action').value = colors.actions;
+    document.getElementById('gitlab-mr__color_wait').value = colors.wait;
+    document.getElementById('gitlab-mr__color_done').value = colors.done;
 });
 
 function saveOptions() {

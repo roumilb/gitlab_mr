@@ -1,8 +1,8 @@
 let upvotesNeeded = 2;
 let colors = {
-    'actions': '#FF2D00',
-    'wait': '#FFDC00',
-    'done': '#00E90E'
+    actions: '#FF2D00',
+    wait: '#FFDC00',
+    done: '#00E90E'
 };
 let apiUrlBase;
 let username;
