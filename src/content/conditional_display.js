@@ -105,14 +105,19 @@ function getUpvoters(id, isMine, isDone, projectID, mergeRequestId) {
 
 function handleMyMrCall(id, isDone, mergeRequestId) {
     if (xhrCondDisplay[mergeRequestId].readyState === 4) {
-        allDiscussions = JSON.parse(xhrCondDisplay[mergeRequestId].responseText);
         const status = [];
+
+        allDiscussions = JSON.parse(xhrCondDisplay[mergeRequestId].responseText);
         Object.keys(allDiscussions).forEach(discussionKey => {
             if (allDiscussions[discussionKey].notes[0].resolvable) {
                 status.push(...handleDiscussionMyMr(id, discussionKey));
             }
         });
-        if (status.length === 0) status.push('wait');
+
+        if (status.length === 0) {
+            status.push('wait');
+        }
+
         mergeRequestStatus[mergeRequestId] = {
             status: status.indexOf('actions') !== -1 || isDone ? 'actions' : 'wait',
             message: isDone && !status.includes('not-resolved') ? 'Can be merged!' : ''
@@ -126,15 +131,18 @@ function handleMyMrCall(id, isDone, mergeRequestId) {
 function handleOtherMrCall(id, isDone, mergeRequestId) {
     if (xhrCondDisplay[mergeRequestId].readyState === 4) {
         allDiscussions = JSON.parse(xhrCondDisplay[mergeRequestId].responseText);
+
         const counts = {
             my_discussions: 0,
             my_discussions_resolved: 0,
             my_discussions_not_resolved_to_count: 0,
             my_discussions_not_resolved_need_wait: 0
         };
+
         let participated = false;
         Object.keys(allDiscussions).forEach(discussionKey => {
             const notes = allDiscussions[discussionKey].notes;
+
             if (tracking === 'not_mine_participate') {
                 notes.map(note => {
                     if (note.author.username === username) participated = true;
@@ -156,10 +164,12 @@ function handleOtherMrCall(id, isDone, mergeRequestId) {
                 }
             }
         });
+
         if (!participated && tracking === 'not_mine_participate') {
             addOpacityIfNotTracked(mergeRequestId);
             return;
         }
+
         const message = '';
         let status = 'done';
         if (myUpvotes[mergeRequestId] || isDone) {

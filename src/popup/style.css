@@ -80,4 +80,9 @@ label, input[type="text"], .button{
 
 #gitlab-mr .gitlab-mr__settings__container .gitlab-mr__settings__upvotes__container{
 	display: none;
+	align-items: center;
+}
+
+#gitlab-mr .gitlab-mr__settings__container .gitlab-mr__settings__upvotes__container label{
+	margin-right: 1rem;
 }

@@ -6,7 +6,7 @@ chrome store: https://chrome.google.com/webstore/detail/gitlab-mr-tools/gefblbbc
 
 ## How it works
 
-There is 3 status for a merge request:
+There are 3 statuses for a merge request:
 
 ### Action needed: (default red)
 
@@ -19,7 +19,7 @@ There is 3 status for a merge request:
 **If you are the reviewer:** one of your discussions is not resolved and the last message is from you or one of the discussion is not from you and the last message is from you
 
 **You created the merge request:** all of the discussions are resolved OR in discussions not resolved the last message have to be yours
-
+ 
 ### Done: (default green)
 
 **If you are the reviewer:** all of your discussions are resolved and you've upvoted
