@@ -14,6 +14,7 @@ chrome.storage.sync.get(['gitlabmr'], function (result) {
         done: '#00E90E'
     };
 
+    // Use saved values if any
     if (result.gitlabmr !== undefined) {
         if (result.gitlabmr.username !== undefined) username = result.gitlabmr.username;
         if (result.gitlabmr.url !== undefined) gitlabUrl = result.gitlabmr.url;
@@ -23,15 +24,7 @@ chrome.storage.sync.get(['gitlabmr'], function (result) {
         if (result.gitlabmr.colors !== undefined) colors = result.gitlabmr.colors;
     }
 
-    if (!username && !gitlabUrl) {
-        //TODO get the username and url from the current page if possible
-        // const gitlabProfileLink = document.querySelector('.gl-new-dropdown-item-content[data-track-label="user_profile"]');
-        // if (gitlabProfileLink) {
-        //     username = gitlabProfileLink.getAttribute('href').split('/').pop();
-        //     gitlabUrl = window.location.origin;
-        // }
-    }
-
+    // Set the option values
     document.getElementById('gitlab-mr__settings__username').value = username;
     document.getElementById('gitlab-mr__settings__url').value = gitlabUrl;
     if (result.gitlabmr.working_with === 'approvals') {
