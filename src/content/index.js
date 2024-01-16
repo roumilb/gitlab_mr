@@ -22,7 +22,7 @@ if (isGitlabContext) {
         }
 
         //TODO Maybe remove the configuration fields and always use the connected account with this method?
-        if (undefined === result.gitlabmr.username || '' === result.gitlabmr.username || undefined === result.gitlabmr.url || '' === result.gitlabmr.url) {
+        if (!result.gitlabmr.username || !result.gitlabmr.url) {
             const gitlabProfileLink = document.querySelector('[data-track-label="user_profile"]');
             if (gitlabProfileLink) {
                 result.gitlabmr.username = gitlabProfileLink.getAttribute('href').split('/').pop();
