@@ -21,11 +21,10 @@ function sortMergeRequest() {
     if (xhrGetAllMergeRequests.readyState === 4 && xhrGetAllMergeRequests.status >= 200 && xhrGetAllMergeRequests.status <= 299) {
         mrCondDisplay = JSON.parse(xhrGetAllMergeRequests.responseText);
         Object.keys(mrCondDisplay).forEach(key => {
-            const isMine = mrCondDisplay[key].author.username === username;
-            if (!isMine && tracking === 'not_mine') {
-                addOpacityIfNotTracked(mrCondDisplay[key].id);
+            if (!needTracking(mrCondDisplay[key])) {
                 return;
             }
+            const isMine = mrCondDisplay[key].author.username === username;
 
             if (workWith === 'upvotes') {
                 getUpvoters(

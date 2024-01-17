@@ -37,9 +37,11 @@ function getMergeRequestMyMR(projectID, mrId) {
     xhrMyMergeRequests[`${projectID}-${mrId}`].onreadystatechange = function () {
         if (xhrMyMergeRequests[`${projectID}-${mrId}`].readyState === 4) {
             const mergeRequest = JSON.parse(xhrMyMergeRequests[`${projectID}-${mrId}`].responseText)[0];
+            if (!needTracking(mergeRequest)) {
+                return;
+            }
 
             mergeRequestsCountDiscussion[`${projectID}-${mrId}`] = mergeRequest;
-            // mergeRequestsCountDiscussion.push(mergeRequest);
             projectId = projectID;
             handelAllMr(`${projectID}-${mrId}`, projectID);
 

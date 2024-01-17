@@ -1,11 +1,11 @@
-let maxFetch = 15;
-let currentFect = 0;
+const maxFetch = 15;
+let currentFetch = 0;
 
 function waitForLoading() {
-    currentFect++;
+    currentFetch++;
     let resolvedButtons = document.querySelectorAll('.line-resolve-btn.is-active');
     if (resolvedButtons.length === 0) {
-        if (currentFect <= maxFetch) {
+        if (currentFetch <= maxFetch) {
             setTimeout(function () {
                 waitForLoading();
             }, 500);

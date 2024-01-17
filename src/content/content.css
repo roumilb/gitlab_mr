@@ -11,10 +11,8 @@
 .issuable-info-container{
 	transition: .2s;
 	border-radius: 3px;
-}
-
-.issuable-info-container:hover{
-	border-left-width: 7px !important;
+	border-left: 5px solid transparent;
+	padding-left: 10px !important;
 }
 
 #gitlab-mr__notif{
