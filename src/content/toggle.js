@@ -17,28 +17,22 @@ function waitForLoading() {
 
 function loaded(resolvedButtons) {
     for (let i = 0 ; i < resolvedButtons.length ; i++) {
-        let header = resolvedButtons[i].closest('.note-header');
-        if (null === header) continue;
-        let thread = header.closest('.timeline-content');
-        if (null === thread) continue;
-        let firstComment = thread.querySelector('.timeline-discussion-body .note-body');
-        if (null === firstComment) continue;
-        firstComment.style.height = '0';
-        firstComment.style.paddingTop = '20px';
-        firstComment.style.position = 'relative';
-        firstComment.innerHTML += '<div class="gtilab_mr_tools_toggle"><i class="fa fa-chevron-down"></i>Toggle thread</div>';
+        const header = resolvedButtons[i].closest('.note-header');
+        if (!header) continue;
 
-        firstComment.querySelector('.gtilab_mr_tools_toggle').addEventListener('click', function (event) {
-            let icon = event.target.querySelector('i');
-            if (firstComment.style.height === 'auto') {
-                firstComment.style.height = '0';
-                icon.classList.remove('fa-chevron-up');
-                icon.classList.add('fa-chevron-down');
-            } else {
-                firstComment.style.height = 'auto';
-                icon.classList.remove('fa-chevron-down');
-                icon.classList.add('fa-chevron-up');
-            }
+        const thread = header.closest('.timeline-content');
+        if (!thread) continue;
+
+        const headerInfo = header.querySelector('.note-header-info');
+        if (!headerInfo) continue;
+        headerInfo.outerHTML += '<div class="gtilab_mr_tools_toggle"><span>Toggle thread</span></div>';
+
+        const firstComment = thread.querySelector('.timeline-discussion-body');
+        if (!firstComment) continue;
+        firstComment.style.display = 'none';
+
+        header.querySelector('.gtilab_mr_tools_toggle').addEventListener('click', function () {
+            firstComment.style.display = firstComment.style.display !== 'none' ? 'none' : 'block';
         });
     }
 }

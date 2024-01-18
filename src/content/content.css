@@ -24,27 +24,29 @@
 }
 
 .gtilab_mr_tools_toggle{
-	font-size: 13px;
 	color: #919191;
-	position: absolute;
-	top: 0;
-	right: 0;
 	cursor: pointer;
 	transition: .1s;
+	align-items: center;
+	display: flex;
+	flex-direction: row;
+	min-height: 2rem;
+	flex-wrap: wrap;
+	padding-top: 6px;
+	padding-bottom: 6px;
+	line-height: 1.25rem;
 }
 
-.gtilab_mr_tools_toggle i{
-	margin-right: 3px;
-	font-size: 10px;
-	line-height: 18px;
-	vertical-align: top;
+
+.gtilab_mr_tools_toggle span{
+	font-size: 13px;
 }
 
-.gtilab_mr_tools_toggle:hover{
+.gtilab_mr_tools_toggle:hover span{
 	color: #1b69b6;
 }
 
-.gtilab_mr_tools_toggle:focus{
+.gtilab_mr_tools_toggle:focus span{
 	color: #1b69b6;
 	text-decoration: underline;
 	outline: none;

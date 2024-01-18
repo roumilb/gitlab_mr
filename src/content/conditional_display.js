@@ -42,8 +42,8 @@ function sortMergeRequest() {
 }
 
 function addOpacityIfNotTracked(mergeRequestId) {
-    const issue = document.getElementById(`merge_request_${mergeRequestId}`).getElementsByClassName('issuable-info-container')[0];
-    if (issue === null) return;
+    const issue = document.getElementById(`merge_request_${mergeRequestId}`)?.getElementsByClassName('issuable-info-container')[0];
+    if (!issue) return;
     issue.style.opacity = '.5';
 }
 

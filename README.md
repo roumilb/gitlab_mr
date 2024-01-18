@@ -19,7 +19,7 @@ There are 3 statuses for a merge request:
 **If you are the reviewer:** one of your discussions is not resolved and the last message is from you or one of the discussion is not from you and the last message is from you
 
 **You created the merge request:** all of the discussions are resolved OR in discussions not resolved the last message have to be yours
- 
+
 ### Done: (default green)
 
 **If you are the reviewer:** all of your discussions are resolved and you've upvoted
@@ -31,6 +31,14 @@ There are 3 statuses for a merge request:
 ### v3.4
 
 * Fix extension for all new gitlab UI
+
+### v4
+
+* Load every merge request at the same time instead of one by one
+* Improve UI for the merge request list
+* Add an option to do not track draft merge request
+* Auto-detect username and gitlab url when no configuration is set
+* Improve UI toggle of resolve comment
 
 ### v3.3
 
