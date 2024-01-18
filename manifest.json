@@ -27,7 +27,8 @@
                 "src/content/conditional_display.js",
                 "src/content/my_mr.js",
                 "src/content/index.js",
-                "src/content/toggle.js"
+                "src/content/toggle.js",
+                "src/content/tracking.js"
             ]
         }
     ],
