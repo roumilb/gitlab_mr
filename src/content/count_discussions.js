@@ -61,13 +61,15 @@ function findAndReplace(requestId, count) {
     const mergeRequest = document.getElementById(`merge_request_${requestId}`);
     if (!mergeRequest) return;
     const issue = mergeRequest.getElementsByClassName('issuable-info-container')[0];
+    mergeRequest.setAttribute('style', 'display: flex; padding-bottom: 5px!important');
     if (issue === null) return;
     count.resolved = count.total >= count.notResolved ? count.total - count.notResolved : 0;
     addHtml(issue, count);
 }
 
 function addHtml(container, count) {
-    const discNow = container.getElementsByClassName('issuable-meta')[0];
-    discNow.querySelectorAll('[data-testid="issuable-comments"]')[0].innerHTML += ' comments';
-    discNow.innerHTML += '<div class="merge_request_acyboys">Discussions resolved: ' + count.resolved + '/' + count.total + '</div>';
+    const comments = container.querySelector('[data-testid="issuable-comments"]');
+    if (!comments) return;
+    comments.innerHTML += ' comments';
+    comments.parentElement.innerHTML += `<div class="merge_request_acyboys">Discussions resolved: ${count.resolved}/${count.total}</div>`;
 }
