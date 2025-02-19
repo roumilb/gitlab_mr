@@ -1,36 +1,36 @@
 {
-    "name": "Gitlab enhancer",
-    "version": "4.1",
-    "description": "Gitlab extension to enhance the user experience on the merger request process",
-    "permissions": [
-        "storage"
-    ],
-    "action": {
-        "default_popup": "src/popup/index.html",
-        "default_icon": "images/image.png"
-    },
-    "icons": {
-        "16": "images/image.png",
-        "128": "images/image.png"
-    },
-    "content_scripts": [
-        {
-            "matches": [
-                "<all_urls>"
-            ],
-            "css": [
-                "src/content/content.css"
-            ],
-            "js": [
-                "src/content/helper_api.js",
-                "src/content/count_discussions.js",
-                "src/content/conditional_display.js",
-                "src/content/my_mr.js",
-                "src/content/index.js",
-                "src/content/toggle.js",
-                "src/content/tracking.js"
-            ]
-        }
-    ],
-    "manifest_version": 3
+  "name": "Review process enhancer",
+  "version": "4.2",
+  "description": "Extension to enhance the user experience on the Gitlab merge request process",
+  "permissions": [
+    "storage"
+  ],
+  "action": {
+    "default_popup": "src/popup/index.html",
+    "default_icon": "images/image.png"
+  },
+  "icons": {
+    "16": "images/image.png",
+    "128": "images/image.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "css": [
+        "src/content/content.css"
+      ],
+      "js": [
+        "src/content/helper_api.js",
+        "src/content/count_discussions.js",
+        "src/content/conditional_display.js",
+        "src/content/my_mr.js",
+        "src/content/index.js",
+        "src/content/toggle.js",
+        "src/content/tracking.js"
+      ]
+    }
+  ],
+  "manifest_version": 3
 }
